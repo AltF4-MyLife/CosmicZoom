@@ -1,0 +1,2504 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CosmicZoom - NASA Space Apps Cairo 2025</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #e0e0e0;
+            background: #050510;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(5, 5, 20, 0.85);
+            backdrop-filter: blur(15px);
+            z-index: 1000;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #00d4ff;
+            text-decoration: none;
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .logo:hover {
+            transform: scale(1.05);
+            text-shadow: 0 0 15px rgba(0, 212, 255, 0.8);
+        }
+        
+        .logo i {
+            font-size: 1.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            transition: all 0.3s;
+            font-weight: 500;
+            position: relative;
+            padding: 0.5rem 0;
+        }
+
+        .nav-links a:hover {
+            color: #00d4ff;
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00d4ff, transparent);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* RTL/LTR Text Direction Fixes */
+        .mixed-text {
+            direction: ltr;
+            text-align: right;
+            unicode-bidi: embed;
+        }
+
+        .english-inline {
+            direction: ltr;
+            display: inline;
+            unicode-bidi: embed;
+        }
+
+        .arabic-text {
+            direction: rtl;
+            text-align: right;
+        }
+
+        .auto-direction {
+            direction: auto;
+        }
+
+        /* Technical terms and API names */
+        .tech-term {
+            direction: ltr;
+            display: inline;
+            font-family: 'Courier New', monospace;
+            background: rgba(0, 212, 255, 0.15);
+            padding: 3px 6px;
+            border-radius: 4px;
+            unicode-bidi: embed;
+            font-weight: 500;
+            box-shadow: 0 0 8px rgba(0, 212, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .tech-term:hover {
+            background: rgba(0, 212, 255, 0.25);
+            box-shadow: 0 0 12px rgba(0, 212, 255, 0.4);
+        }
+
+        /* Main Content */
+        main {
+            margin-top: 80px;
+        }
+
+        .page {
+            display: none;
+            min-height: calc(100vh - 80px);
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* Particle Background */
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Home Page */
+        .home-hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(5, 5, 30, 0.8)),
+                        url('https://images.unsplash.com/photo-1517976077884-a15d070183b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80') center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .home-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, transparent 0%, rgba(5, 5, 30, 0.8) 100%);
+            z-index: 2;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 10;
+        }
+        
+        .hero-content h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(45deg, #00d4ff, #0099cc, #0055ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
+            letter-spacing: 2px;
+            animation: glow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            0% {
+                text-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+            }
+            100% {
+                text-shadow: 0 0 30px rgba(0, 212, 255, 0.7), 0 0 40px rgba(0, 100, 255, 0.4);
+            }
+        }
+
+        .hero-content p {
+            font-size: 1.4rem;
+            max-width: 800px;
+            margin: 0 auto 3rem;
+            line-height: 1.8;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+            opacity: 0.9;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 15px 35px;
+            background: linear-gradient(45deg, #00d4ff, #0099cc, #0066ff);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            box-shadow: 0 5px 15px rgba(0, 212, 255, 0.4);
+        }
+        
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background: linear-gradient(45deg, #0066ff, #00d4ff);
+            transition: width 0.4s ease;
+            z-index: -1;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 30px rgba(0, 212, 255, 0.6);
+            letter-spacing: 1px;
+        }
+        
+        .cta-button:hover::before {
+            width: 100%;
+        }
+
+        /* Project Summary Section */
+        .project-summary {
+            padding: 5rem 2rem;
+            background: linear-gradient(to bottom, rgba(5, 5, 30, 0.9), rgba(10, 10, 40, 0.9));
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .project-summary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1506318137071-a8e063b4bec0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1770&q=80') center/cover;
+            opacity: 0.1;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .project-summary h2 {
+            text-align: center;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.8rem;
+            margin-bottom: 3rem;
+            color: #00d4ff;
+            direction: rtl;
+            text-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .project-summary h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 10%;
+            width: 80%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #00d4ff, transparent);
+        }
+
+        .summary-content {
+            display: grid;
+            gap: 3rem;
+        }
+
+        .main-concept {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2.5rem;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            direction: rtl;
+            text-align: right;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .main-concept::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #00d4ff, #0066ff);
+        }
+        
+        .main-concept:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 212, 255, 0.15);
+        }
+
+        .main-concept h3 {
+            color: #00d4ff;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            font-family: 'Orbitron', sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        
+        .main-concept h3 i {
+            font-size: 1.5rem;
+        }
+
+        .main-concept p {
+            margin-bottom: 1.5rem;
+            line-height: 1.8;
+            color: #e0e0e0;
+        }
+
+        .data-sources, .technical-overview, .user-experience {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2.5rem;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            direction: rtl;
+            text-align: right;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .data-sources::before, .technical-overview::before, .user-experience::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #00d4ff, #0066ff);
+        }
+        
+        .data-sources:hover, .technical-overview:hover, .user-experience:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 212, 255, 0.15);
+        }
+
+        .data-sources h3, .technical-overview h3, .user-experience h3 {
+            color: #00d4ff;
+            margin-bottom: 2rem;
+            font-size: 1.8rem;
+            font-family: 'Orbitron', sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        
+        .data-sources h3 i, .technical-overview h3 i, .user-experience h3 i {
+            font-size: 1.5rem;
+        }
+
+        .source-grid, .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .source-item, .tech-item {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 1.8rem;
+            border-radius: 15px;
+            border-left: 4px solid #00d4ff;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .source-item::after, .tech-item::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 50px;
+            height: 50px;
+            background: radial-gradient(circle at bottom right, rgba(0, 212, 255, 0.2), transparent 70%);
+            border-radius: 50%;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .source-item:hover, .tech-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.12);
+        }
+        
+        .source-item:hover::after, .tech-item:hover::after {
+            opacity: 1;
+        }
+
+        .source-item h4, .tech-item h4 {
+            color: #00d4ff;
+            margin-bottom: 0.8rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .source-item p, .tech-item p {
+            line-height: 1.6;
+            font-size: 0.95rem;
+            color: #e0e0e0;
+        }
+
+        .ux-features {
+            display: grid;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .feature {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 4px solid #00d4ff;
+        }
+
+        .feature h4 {
+            color: #00d4ff;
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .feature p {
+            line-height: 1.6;
+            font-size: 0.9rem;
+        }
+
+        /* User Dashboard */
+        .user-dashboard {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            color: white;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+
+        .form-section {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #00d4ff;
+            font-weight: 500;
+        }
+
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.9);
+            font-size: 1rem;
+        }
+
+        .data-section {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .map-placeholder {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 3rem;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 2px dashed #00d4ff;
+        }
+
+        .aqi-indicator {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .aqi-value {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #4CAF50;
+            margin-bottom: 1rem;
+        }
+
+        .recommendations {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Earth Page */
+        .earth-page {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            color: white;
+            text-align: center;
+        }
+
+        .globe-container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 4rem;
+            margin: 3rem 0;
+            backdrop-filter: blur(10px);
+            border: 2px dashed #00d4ff;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .control-btn {
+            padding: 10px 20px;
+            background: rgba(0, 212, 255, 0.2);
+            border: 1px solid #00d4ff;
+            color: #00d4ff;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .control-btn:hover {
+            background: #00d4ff;
+            color: white;
+        }
+
+        /* Resources Page */
+        .resources-page {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            color: white;
+        }
+
+        .resource-categories {
+            display: grid;
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .category {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 2.5rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 212, 255, 0.3);
+        }
+
+        .category h3 {
+            color: #00d4ff;
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            border-bottom: 2px solid rgba(0, 212, 255, 0.3);
+            padding-bottom: 1rem;
+        }
+
+        .resource-list {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .resource-item {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 2rem;
+            border-radius: 15px;
+            border-left: 4px solid #00d4ff;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .resource-item:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.2);
+        }
+
+        .resource-item a {
+            color: #00d4ff;
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: 600;
+            display: block;
+            margin-bottom: 1rem;
+            transition: color 0.3s;
+        }
+
+        .resource-item a:hover {
+            color: #ffffff;
+        }
+
+        .resource-item p {
+            color: #e0e0e0;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            text-align: justify;
+        }
+
+        .resource-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .tag {
+            background: rgba(0, 212, 255, 0.2);
+            color: #00d4ff;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            border: 1px solid rgba(0, 212, 255, 0.4);
+            transition: all 0.3s;
+        }
+
+        .tag:hover {
+            background: #00d4ff;
+            color: white;
+        }
+
+        /* About Page */
+        .about-page {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            color: white;
+        }
+
+        .about-content {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 3rem;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            margin-top: 2rem;
+        }
+
+        .architecture-section {
+            margin: 3rem 0;
+        }
+
+        .architecture-section h3 {
+            color: #00d4ff;
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            border-bottom: 2px solid rgba(0, 212, 255, 0.3);
+            padding-bottom: 1rem;
+        }
+
+        .architecture-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .arch-component {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 2rem;
+            border-radius: 15px;
+            border-left: 4px solid #00d4ff;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+
+        .arch-component:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.2);
+        }
+
+        .arch-component h4 {
+            color: #00d4ff;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+            padding-bottom: 0.5rem;
+        }
+
+        .arch-component p {
+            color: #e0e0e0;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .arch-component ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .arch-component li {
+            color: #c0c0c0;
+            padding: 0.3rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+            line-height: 1.4;
+        }
+
+        .arch-component li:before {
+            content: "▶";
+            color: #00d4ff;
+            position: absolute;
+            left: 0;
+            top: 0.3rem;
+        }
+
+        /* Pipeline Section Styles */
+        .pipeline-section {
+            margin-top: 3rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(0, 100, 255, 0.1));
+            border-radius: 20px;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+        }
+
+        .pipeline-section h3 {
+            color: #00d4ff;
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+        }
+
+        .pipeline-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .pipeline-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 1.5rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            border-left: 4px solid #00d4ff;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .pipeline-step:hover {
+            transform: translateX(10px);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 5px 20px rgba(0, 212, 255, 0.15);
+        }
+
+        .step-number {
+            background: linear-gradient(135deg, #00d4ff, #0064ff);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-content h4 {
+            color: #00d4ff;
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .step-content p {
+            color: #e0e0e0;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+            font-size: 1rem;
+        }
+
+        .step-content ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .step-content li {
+            color: #c0c0c0;
+            padding: 0.4rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+            line-height: 1.5;
+            font-size: 0.95rem;
+        }
+
+        .step-content li:before {
+            content: "•";
+            color: #00d4ff;
+            position: absolute;
+            left: 0;
+            top: 0.4rem;
+            font-size: 1.2rem;
+        }
+
+        /* Connect pipeline steps with lines */
+        .pipeline-step:not(:last-child):after {
+            content: "";
+            position: absolute;
+            left: 35px;
+            bottom: -2rem;
+            width: 2px;
+            height: 2rem;
+            background: linear-gradient(to bottom, #00d4ff, transparent);
+            z-index: 1;
+        }
+
+        /* Responsive design for pipeline */
+        @media (max-width: 768px) {
+            .pipeline-step {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .step-number {
+                align-self: center;
+            }
+
+            .pipeline-step:not(:last-child):after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+        }
+
+        .challenge-info {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 2px solid rgba(0, 212, 255, 0.3);
+        }
+
+        .challenge-info h3 {
+            color: #00d4ff;
+            font-size: 1.3rem;
+            margin: 2rem 0 1rem 0;
+        }
+
+        /* Technologies Section Styles */
+        .technologies-section {
+            margin-top: 3rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.08), rgba(0, 100, 255, 0.08));
+            border-radius: 20px;
+            border: 1px solid rgba(0, 212, 255, 0.2);
+        }
+
+        .technologies-section h3 {
+            color: #00d4ff;
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+        }
+
+        .tech-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .tech-category {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 15px;
+            border-left: 4px solid #00d4ff;
+            transition: all 0.3s ease;
+        }
+
+        .tech-category:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.08);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.15);
+        }
+
+        .tech-category h4 {
+            color: #00d4ff;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+            padding-bottom: 0.5rem;
+        }
+
+        .tech-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .tech-item {
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: default;
+        }
+
+        .tech-item.primary {
+            background: linear-gradient(135deg, #00d4ff, #0064ff);
+            color: white;
+            box-shadow: 0 2px 10px rgba(0, 212, 255, 0.3);
+        }
+
+        .tech-item.secondary {
+            background: rgba(0, 212, 255, 0.2);
+            color: #00d4ff;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+        }
+
+        .tech-item.backend {
+            background: rgba(255, 165, 0, 0.2);
+            color: #ffb347;
+            border: 1px solid rgba(255, 165, 0, 0.3);
+        }
+
+        .tech-item.database {
+            background: rgba(50, 205, 50, 0.2);
+            color: #90ee90;
+            border: 1px solid rgba(50, 205, 50, 0.3);
+        }
+
+        .tech-item.frontend {
+            background: rgba(255, 20, 147, 0.2);
+            color: #ff69b4;
+            border: 1px solid rgba(255, 20, 147, 0.3);
+        }
+
+        .tech-item.integration {
+            background: rgba(138, 43, 226, 0.2);
+            color: #da70d6;
+            border: 1px solid rgba(138, 43, 226, 0.3);
+        }
+
+        .tech-item.deployment {
+            background: rgba(255, 215, 0, 0.2);
+            color: #ffd700;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .tech-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .implementation-notes {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 193, 7, 0.3);
+        }
+
+        .implementation-notes h4 {
+            color: #ffc107;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .implementation-notes h4:before {
+            content: "⚠️";
+            margin-left: 0.5rem;
+        }
+
+        .note-item {
+            background: rgba(255, 193, 7, 0.1);
+            padding: 1rem;
+            margin-bottom: 0.8rem;
+            border-radius: 10px;
+            border-left: 3px solid #ffc107;
+            color: #e0e0e0;
+            line-height: 1.5;
+        }
+
+        .note-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .note-item strong {
+            color: #ffc107;
+        }
+
+        /* Responsive design for technologies */
+        @media (max-width: 768px) {
+            .tech-categories {
+                grid-template-columns: 1fr;
+            }
+
+            .tech-items {
+                justify-content: center;
+            }
+        }
+
+        /* Team Page */
+        .team-page {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            color: white;
+        }
+
+        .team-info {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .team-vision {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2rem;
+            border-radius: 15px;
+            max-width: 800px;
+            margin: 0 auto;
+            border-left: 4px solid #4a9df8;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .team-member {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+
+        .team-member:hover {
+            transform: translateY(-10px);
+            border-bottom: 3px solid #4a9df8;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .team-member h4 {
+            margin: 1rem 0 0.5rem;
+            color: #4a9df8;
+        }
+
+        .team-member p {
+            margin: 0.5rem 0;
+            opacity: 0.8;
+        }
+
+        .member-bio {
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            text-align: justify;
+        }
+
+        .team-achievements {
+            margin-top: 4rem;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2rem;
+            border-radius: 15px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .team-achievements h3 {
+            color: #4a9df8;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .team-achievements ul {
+            padding-left: 2rem;
+            line-height: 1.6;
+        }
+
+        .team-member h4 {
+            color: #00d4ff;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .team-member p {
+            font-size: 0.9rem;
+            color: #c0c0c0;
+        }
+
+        .team-member:hover {
+            transform: translateY(-5px);
+        }
+
+        .team-info {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            margin-bottom: 3rem;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer-links {
+            margin: 1rem 0;
+        }
+
+        .footer-links a {
+            color: #00d4ff;
+            text-decoration: none;
+            margin: 0 1rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+        
+        /* Challenges Page */
+        #challenges {
+            padding: 3rem 0;
+            background-color: rgba(10, 15, 30, 0.7);
+        }
+        
+        .challenge-container {
+            background: rgba(20, 30, 60, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 
+                        inset 0 1px 1px rgba(255, 255, 255, 0.1),
+                        0 0 20px rgba(65, 120, 255, 0.2);
+            border: 1px solid rgba(100, 150, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+            margin-top: 2rem;
+        }
+        
+        .challenge-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+            z-index: 1;
+        }
+        
+        .challenge-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(100, 150, 255, 0.2);
+        }
+        
+        .challenge-badge {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0061ff, #60efff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 97, 255, 0.4);
+        }
+        
+        .challenge-badge i {
+            font-size: 1.8rem;
+            color: white;
+        }
+        
+        .challenge-header h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            margin: 0;
+            background: linear-gradient(90deg, #fff, #a0e9ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 10px rgba(160, 233, 255, 0.3);
+        }
+        
+        .challenge-description {
+            margin-bottom: 2.5rem;
+        }
+        
+        .challenge-description p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #d0e6ff;
+        }
+        
+        .challenge-quote {
+            background: rgba(10, 20, 40, 0.6);
+            border-left: 4px solid #4facfe;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 0 10px 10px 0;
+        }
+        
+        .challenge-quote blockquote {
+            font-style: italic;
+            margin: 0;
+            color: #a0e9ff;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+        
+        .challenge-quote cite {
+            display: block;
+            margin-top: 0.8rem;
+            font-size: 0.9rem;
+            color: #7aa8ff;
+            font-style: normal;
+        }
+        
+        .challenge-objectives {
+            list-style: none;
+            padding: 0;
+            margin: 1.5rem 0;
+        }
+        
+        .challenge-objectives li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding: 0.8rem 1rem;
+            background: rgba(30, 40, 70, 0.5);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .challenge-objectives li:hover {
+            background: rgba(40, 60, 100, 0.5);
+            transform: translateX(5px);
+        }
+        
+        .objective-icon {
+            margin-right: 1rem;
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .objective-icon i {
+            font-size: 0.9rem;
+            color: white;
+        }
+        
+        /* Resources & Tools Page */
+        #resources {
+            padding: 3rem 0;
+            background-color: rgba(10, 15, 30, 0.7);
+        }
+        
+        .resources-intro {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .resources-intro p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            color: #d0e6ff;
+        }
+        
+        .resources-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 3rem;
+        }
+        
+        .resource-section {
+            background: rgba(20, 30, 60, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 
+                        inset 0 1px 1px rgba(255, 255, 255, 0.1),
+                        0 0 20px rgba(65, 120, 255, 0.2);
+            border: 1px solid rgba(100, 150, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .resource-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+            z-index: 1;
+        }
+        
+        .resource-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(100, 150, 255, 0.2);
+        }
+        
+        .resource-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #0061ff, #60efff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 97, 255, 0.4);
+        }
+        
+        .resource-icon i {
+            font-size: 1.8rem;
+            color: white;
+        }
+        
+        .resource-header h3 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.8rem;
+            margin: 0;
+            background: linear-gradient(90deg, #fff, #a0e9ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 10px rgba(160, 233, 255, 0.3);
+        }
+        
+        /* Problem & Solution Section in About Page */
+        .problem-solution-section {
+            margin-bottom: 3rem;
+        }
+        
+        .problem-solution-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        
+        .problem-box, .solution-box {
+            background: rgba(20, 30, 60, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 
+                        inset 0 1px 1px rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(100, 150, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .problem-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #ff4f4f 0%, #ff9f00 100%);
+        }
+        
+        .solution-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #00f2fe 0%, #4facfe 100%);
+        }
+        
+        /* Enhanced Responsive Design */
+        @media (max-width: 992px) {
+            .problem-solution-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .challenge-header, 
+            .resource-header,
+            .problem-header, 
+            .solution-header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .challenge-badge,
+            .resource-icon,
+            .problem-icon, 
+            .solution-icon {
+                margin-right: 0;
+                margin-bottom: 1rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .challenge-container,
+            .resource-section,
+            .problem-box,
+            .solution-box {
+                padding: 1.5rem;
+            }
+            
+            .challenge-header h3,
+            .resource-header h3 {
+                font-size: 1.5rem;
+            }
+        }
+        
+        /* أنماط صفحة التحديات */
+        .challenge-page {
+            padding: 2rem 0;
+        }
+        
+        .challenge-title {
+            font-size: 2.2rem;
+            color: #00d4ff;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .challenge-description {
+            max-width: 900px;
+            margin: 0 auto 2rem;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+        
+        .challenge-container {
+            background: rgba(10, 10, 40, 0.6);
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-left: 4px solid #00d4ff;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .challenge-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .challenge-badge {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #00d4ff, #090979);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1.5rem;
+            flex-shrink: 0;
+        }
+        
+        .challenge-badge i {
+            font-size: 1.8rem;
+            color: white;
+        }
+        
+        /* أنماط صفحة الموارد والأدوات */
+        .resources-page {
+            padding: 2rem 0;
+        }
+        
+        .resource-section {
+            background: rgba(10, 10, 40, 0.6);
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-left: 4px solid #7b68ee;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .resource-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .resource-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #7b68ee, #4b0082);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1.5rem;
+            flex-shrink: 0;
+        }
+        
+        .resource-icon i {
+            font-size: 1.8rem;
+            color: white;
+        }
+        
+        .resource-item {
+            background: rgba(20, 20, 50, 0.5);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .resource-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+        }
+        
+        .resource-item h4 {
+            color: #7b68ee;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+        
+        .resource-item p {
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+        
+        .resource-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        
+        .resource-tag {
+            background: rgba(123, 104, 238, 0.2);
+            color: #a395ee;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+        
+        /* أنماط صفحة الاستكشاف */
+        .featured-discoveries {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .discovery-card {
+            background: rgba(10, 10, 40, 0.6);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .discovery-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.5);
+        }
+        
+        .discovery-image {
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .discovery-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .discovery-card:hover .discovery-image img {
+            transform: scale(1.1);
+        }
+        
+        .discovery-info {
+            padding: 1.5rem;
+        }
+        
+        .discovery-info h4 {
+            color: #00d4ff;
+            margin-bottom: 0.8rem;
+            font-size: 1.2rem;
+        }
+        
+        .discovery-info p {
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+            color: #ccc;
+        }
+        
+        .view-btn {
+            background: linear-gradient(135deg, #00d4ff, #090979);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: opacity 0.3s;
+        }
+        
+        .view-btn:hover {
+            opacity: 0.9;
+        }
+        
+        .view-btn i {
+            margin-left: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="#" class="logo"><i class="fas fa-rocket"></i> CosmicZoom</a>
+            <ul class="nav-links">
+                <li><a href="#" onclick="showPage('home')">Home</a></li>
+                <li><a href="#" onclick="showPage('explore')">Explore</a></li>
+                <li><a href="#" onclick="showPage('challenges')">Challenges</a></li>
+                <li><a href="#" onclick="showPage('resources')">Resources & Tools</a></li>
+                <li><a href="#" onclick="showPage('about')">About</a></li>
+                <li><a href="#" onclick="showPage('team')">Team</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="page active">
+            <div class="home-hero">
+                <div id="particles-js"></div>
+                <div class="hero-content">
+                    <h1>CosmicZoom</h1>
+                    <h2>NASA Space Apps Cairo 2025</h2>
+                    <p>CosmicZoom by Sky Link is a web platform that transforms massive NASA imagery into an interactive, collaborative exploration space. Inspired by the smooth navigation of Google Maps, it enables anyone to "walk through" gigapixel and terapixel images of Mars, the Moon, and deep space.</p>
+                    <a href="#" class="cta-button" onclick="showPage('about')">Explore Project</a>
+                </div>
+            </div>
+
+            <div class="project-summary">
+                <div class="container">
+                    <h2>ملخص الفكرة</h2>
+                    <div class="summary-content">
+                        <div class="main-concept">
+                            <h3 class="auto-direction">CosmicZoom: استكشاف الفضاء بتقنية التكبير اللانهائي</h3>
+                            <p class="arabic-text">منصة ويب تحوّل صور ناسا الضخمة إلى تجربة استكشاف تفاعلية. مستوحاة من سهولة التصفح في Google Maps، CosmicZoom تتيح للمستخدمين استكشاف صور بدقة "جيجابكسل" و"تيرابكسل" من المريخ والقمر وأعماق الفضاء.</p>
+                            <p class="arabic-text">يمكنك التكبير بسلاسة من عرض كلي إلى أدق التفاصيل بدون فقدان في الأداء، وإضافة ملاحظات ومناطق اهتمام، ومشاركة اكتشافاتك مع الآخرين.</p>
+                            <p class="arabic-text">يتضمن النظام مساعدة اختيارية من الذكاء الاصطناعي لاقتراح مناطق مثيرة للاهتمام، مما يجعل عملية الاستكشاف أسرع وأكثر متعة.</p>
+                        </div>
+
+                        <div class="data-sources">
+                            <h3>مصادر البيانات الأساسية</h3>
+                            <div class="source-grid">
+                                <div class="source-item">
+                                    <h4>NASA Imagery</h4>
+                                    <p class="mixed-text">صور جيجابكسل وتيرابكسل خام من مهام ناسا، مثل صور المريخ من <span class="tech-term">Mars Reconnaissance Orbiter</span>، وصور القمر من <span class="tech-term">Lunar Reconnaissance Orbiter</span>.</p>
+                                </div>
+                                <div class="source-item">
+                                    <h4>NASA Public APIs</h4>
+                                    <p class="mixed-text">استخدام <span class="tech-term">APIs</span> لتسهيل الوصول إلى مجموعات بيانات الصور الضخمة من مكتبة صور ناسا.</p>
+                                </div>
+                                <div class="source-item">
+                                    <h4>Data Annotation</h4>
+                                    <p class="arabic-text">التعليقات والملاحظات التي يضيفها المستخدمون. هذه البيانات يمكن تصديرها وتحليلها من قبل الباحثين.</p>
+                                </div>
+                                <div class="source-item">
+                                    <h4>AI Models</h4>
+                                    <p class="arabic-text">نماذج الذكاء الاصطناعي (مثل نماذج كشف الأجسام) لتحليل الصور واقتراح مناطق مميزة للاستكشاف.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="technical-overview">
+                            <h3>نظرة عامة تقنية</h3>
+                            <div class="tech-grid">
+                                <div class="tech-item">
+                                    <h4>Preprocessing Pipeline</h4>
+                                    <p class="mixed-text">تحويل الصور الضخمة إلى "أهرامات" <span class="tech-term">Deep Zoom</span> لتسهيل التصفح السلس والتكبير اللانهائي.</p>
+                                </div>
+                                <div class="tech-item">
+                                    <h4>Backend Service</h4>
+                                    <p class="mixed-text">استخدام <span class="tech-term">FastAPI</span> لتقديم شرائح الصور (<span class="tech-term">tiles</span>) والملاحظات التي يضيفها المستخدمون.</p>
+                                </div>
+                                <div class="tech-item">
+                                    <h4>Frontend Rendering</h4>
+                                    <p class="mixed-text">استخدام مكتبة <span class="tech-term">OpenSeadragon</span> لتقديم الصور الكبيرة والملاحظات على الواجهة الأمامية.</p>
+                                </div>
+                                <div class="tech-item">
+                                    <h4>Real-time Collaboration</h4>
+                                    <p class="mixed-text">نظام تعاون متزامن باستخدام <span class="tech-term">WebSockets</span> يتيح للباحثين العمل معًا على نفس الصورة في الوقت الفعلي.</p>
+                                </div>
+                                <div class="tech-item">
+                                    <h4>AI Integration</h4>
+                                    <p class="mixed-text">دمج نماذج <span class="tech-term">Computer Vision</span> لتحليل الصور واكتشاف الظواهر المثيرة للاهتمام تلقائيًا.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="why-cosmic-zoom">
+                            <h3>لماذا CosmicZoom؟</h3>
+                            <div class="features-grid">
+                                <div class="feature-item">
+                                    <div class="feature-icon">
+                                        <i class="fas fa-search-plus"></i>
+                                    </div>
+                                    <h4>تكبير لانهائي</h4>
+                                    <p class="arabic-text">تقنية تكبير متطورة تتيح استكشاف الصور الفلكية بدقة عالية جدًا، من المنظر الكلي وحتى أدق التفاصيل دون فقدان الجودة أو الأداء.</p>
+                                </div>
+                                <div class="feature-item">
+                                    <div class="feature-icon">
+                                        <i class="fas fa-users"></i>
+                                    </div>
+                                    <h4>تعاون فعّال</h4>
+                                    <p class="arabic-text">منصة تعاونية تتيح للباحثين والهواة العمل معًا على نفس الصور، إضافة الملاحظات، ومشاركة الاكتشافات في الوقت الفعلي.</p>
+                                </div>
+                                <div class="feature-item">
+                                    <div class="feature-icon">
+                                        <i class="fas fa-brain"></i>
+                                    </div>
+                                    <h4>ذكاء اصطناعي مساعد</h4>
+                                    <p class="mixed-text">خوارزميات <span class="tech-term">Machine Learning</span> تحلل الصور وتقترح مناطق مثيرة للاهتمام، مما يسرع عملية الاكتشاف ويجعلها أكثر كفاءة.</p>
+                                </div>
+                                <div class="feature-item">
+                                    <div class="feature-icon">
+                                        <i class="fas fa-universal-access"></i>
+                                    </div>
+                                    <h4>سهولة الوصول</h4>
+                                    <p class="arabic-text">واجهة مستخدم بديهية تجعل استكشاف الفضاء متاحًا للجميع، من العلماء المتخصصين إلى الطلاب والهواة المهتمين بالفلك.</p>
+                                </div>
+                                <div class="feature-item">
+                                    <div class="feature-icon">
+                                        <i class="fas fa-mobile-alt"></i>
+                                    </div>
+                                    <h4>تجربة متعددة الأجهزة</h4>
+                                    <p class="arabic-text">تصميم متجاوب يعمل بسلاسة على جميع الأجهزة، من أجهزة الكمبيوتر المكتبية إلى الأجهزة اللوحية والهواتف الذكية.</p>
+                                </div>
+                                <div class="feature-item">
+                                    <div class="feature-icon">
+                                        <i class="fas fa-code-branch"></i>
+                                    </div>
+                                    <h4>مفتوح المصدر</h4>
+                                    <p class="mixed-text">مشروع <span class="tech-term">Open Source</span> يمكن للمجتمع المساهمة في تطويره وتحسينه، مما يضمن استدامته وتطوره المستمر.</p>
+                                </div>
+                            </div>
+                        </div>
+                                </div>
+                                <div class="tech-item">
+                                    <h4>Database & Storage</h4>
+                                    <p class="mixed-text">قاعدة بيانات لتخزين ملاحظات المستخدمين، والمواقع المرجعية، والبيانات الوصفية للصور.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="user-experience">
+                            <h3>تجربة المستخدم والوظائف</h3>
+                            <div class="ux-features">
+                                <div class="feature">
+                                    <h4>Collaborative Annotation</h4>
+                                    <p class="mixed-text">يمكن للمستخدمين إضافة تعليقات على الصور (نقاط، مربعات، مضلعات) ومشاركة هذه الملاحظات مع الآخرين.</p>
+                                </div>
+                                <div class="feature">
+                                    <h4>Seamless Zoom & Pan</h4>
+                                    <p class="mixed-text">التنقل السلس في الصور الضخمة بدون تأخير، مما يمنح إحساسًا باستكشاف حقيقي.</p>
+                                </div>
+                                <div class="feature">
+                                    <h4>Curated Bookmarks</h4>
+                                    <p class="mixed-text">علامات مرجعية جاهزة تسلط الضوء على المعالم البارزة أو الاكتشافات العلمية المهمة.</p>
+                                </div>
+                                <div class="feature">
+                                    <h4>AI-Assisted Discovery</h4>
+                                    <p class="mixed-text">مقترحات من الذكاء الاصطناعي لمناطق مثيرة للاهتمام بناءً على خصائص الصورة.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="explore" class="page">
+            <div class="user-dashboard">
+                <h2>استكشاف الكون</h2>
+                <div class="explore-intro">
+                    <p>استكشف عجائب الكون بدقة غير مسبوقة من خلال منصة CosmicZoom التفاعلية. اختر الجرم السماوي ومجموعة الصور التي تريد استكشافها، ثم انغمس في رحلة بصرية مذهلة عبر أعماق الفضاء.</p>
+                </div>
+                <div class="dashboard-grid">
+                    <div class="form-section">
+                        <h3>اختر جرمًا سماويًا</h3>
+                        <div class="form-group">
+                            <label for="body">الجرم السماوي</label>
+                            <select id="body">
+                                <option value="">اختر جرمًا سماويًا</option>
+                                <option value="moon">القمر</option>
+                                <option value="mars">المريخ</option>
+                                <option value="deep-space">الفضاء السحيق</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="collection">مجموعة الصور</label>
+                            <select id="collection">
+                                <option value="">اختر مجموعة</option>
+                                <option value="lro">مستكشف القمر المداري (LRO)</option>
+                                <option value="mro">مستكشف المريخ المداري (MRO)</option>
+                                <option value="hubble">تلسكوب هابل الفضائي</option>
+                            </select>
+                        </div>
+                        <div class="viewer-description">
+                            <h4>كيفية استخدام العارض التفاعلي</h4>
+                            <ul>
+                                <li><strong>تكبير/تصغير سلس:</strong> استخدم عجلة الماوس أو إيماءات التمرير للتكبير والتصغير بسلاسة من المستوى الكلي إلى التفاصيل المجهرية.</li>
+                                <li><strong>إضافة ملاحظات:</strong> انقر بزر الماوس الأيمن لإضافة ملاحظات وتعليقات على المناطق المثيرة للاهتمام.</li>
+                                <li><strong>نقاط اهتمام ذكية:</strong> سيقترح نظام الذكاء الاصطناعي المدمج نقاط اهتمام بناءً على التحليل المتقدم للصورة.</li>
+                                <li><strong>مشاركة الاكتشافات:</strong> شارك منظورك الفريد مع المجتمع العلمي والمهتمين بالفضاء.</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="data-section">
+                        <h3>اكتشافات مميزة</h3>
+                        <div class="featured-discoveries">
+                            <div class="discovery-card">
+                                <div class="discovery-image">
+                                    <img src="https://photojournal.jpl.nasa.gov/jpeg/PIA12033.jpg" alt="فوهة جاسيني على القمر">
+                                </div>
+                                <div class="discovery-info">
+                                    <h4>فوهة جاسيني على القمر</h4>
+                                    <p>فوهة بركانية ضخمة تقع على الحافة الشمالية الشرقية لبحر الأمطار على سطح القمر، تم تسميتها على اسم عالم الفلك الإيطالي جيوفاني دومينيكو كاسيني.</p>
+                                    <button class="view-btn">استكشاف <i class="fas fa-external-link-alt"></i></button>
+                                </div>
+                            </div>
+                            
+                            <div class="discovery-card">
+                                <div class="discovery-image">
+                                    <img src="https://stsci-opo.org/STScI-01EVT1ECZM5YCTB3YK0JMQE3X3.jpg" alt="سديم رأس الحصان">
+                                </div>
+                                <div class="discovery-info">
+                                    <h4>سديم رأس الحصان</h4>
+                                    <p>سديم مظلم يقع في كوكبة الجبار على بعد حوالي 1500 سنة ضوئية من الأرض، يشتهر بشكله المميز الذي يشبه رأس الحصان، وهو من أشهر السدم في السماء.</p>
+                                    <button class="view-btn">استكشاف <i class="fas fa-external-link-alt"></i></button>
+                                </div>
+                            </div>
+                            
+                            <div class="discovery-card">
+                                <div class="discovery-image">
+                                    <img src="https://www.nasa.gov/wp-content/uploads/2019/07/as11-40-5886.jpg" alt="منطقة هبوط أبولو 11">
+                                </div>
+                                <div class="discovery-info">
+                                    <h4>منطقة هبوط أبولو 11</h4>
+                                    <p>موقع الهبوط التاريخي لمهمة أبولو 11 في بحر الهدوء على سطح القمر، حيث خطا نيل أرمسترونج أول خطوة بشرية على سطح القمر في 20 يوليو 1969.</p>
+                                    <button class="view-btn">استكشاف <i class="fas fa-external-link-alt"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="map-placeholder interactive-viewer">
+                            <div class="viewer-controls">
+                                <button class="control-btn"><i class="fas fa-search-plus"></i></button>
+                                <button class="control-btn"><i class="fas fa-search-minus"></i></button>
+                                <button class="control-btn"><i class="fas fa-home"></i></button>
+                                <button class="control-btn ai-suggest"><i class="fas fa-robot"></i> اقتراحات الذكاء الاصطناعي</button>
+                            </div>
+                            <div class="viewer-canvas">
+                                <div class="loading-overlay">
+                                    <div class="spinner"></div>
+                                    <p>جاري تحميل البيانات عالية الدقة...</p>
+                                </div>
+                                <div class="placeholder-content">
+                                    <h3>عارض الصور التفاعلي</h3>
+                                    <p>هنا سيتم عرض صور عالية الدقة باستخدام تقنية OpenSeadragon، مما يتيح التكبير والتصغير السلس. سيتم عرض الملاحظات ونقاط الاهتمام المقترحة من الذكاء الاصطناعي هنا.</p>
+                                </div>
+                            </div>
+                            <div class="image-metadata">
+                                <div class="metadata-item">
+                                    <span class="metadata-label">المصدر:</span>
+                                    <span class="metadata-value">NASA/JPL</span>
+                                </div>
+                                <div class="metadata-item">
+                                    <span class="metadata-label">تاريخ الالتقاط:</span>
+                                    <span class="metadata-value">2023-06-15</span>
+                                </div>
+                                <div class="metadata-item">
+                                    <span class="metadata-label">الدقة:</span>
+                                    <span class="metadata-value">8.2 جيجابكسل</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="featured-discoveries">
+                    <h3><i class="fas fa-star"></i> اكتشافات مميزة</h3>
+                    <div class="discoveries-grid">
+                        <div class="discovery-card">
+                            <div class="discovery-image">
+                                <div class="discovery-placeholder">
+                                    <i class="fas fa-moon"></i>
+                                </div>
+                            </div>
+                            <div class="discovery-content">
+                                <h4>فوهة جاسيني على القمر</h4>
+                                <p>فوهة بركانية ضخمة يبلغ قطرها 110 كم على سطح القمر، تحتوي على تضاريس معقدة وجدران متدرجة تكشف عن تاريخ الاصطدامات القديمة.</p>
+                                <a href="#" class="discovery-link">استكشف الآن <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                        <div class="discovery-card">
+                            <div class="discovery-image">
+                                <div class="discovery-placeholder">
+                                    <i class="fas fa-meteor"></i>
+                                </div>
+                            </div>
+                            <div class="discovery-content">
+                                <h4>سديم رأس الحصان</h4>
+                                <p>سديم مظلم يقع في كوكبة الجبار على بعد 1500 سنة ضوئية من الأرض، يشتهر بشكله المميز الذي يشبه رأس الحصان، ويعد من أشهر السدم في مجرتنا.</p>
+                                <a href="#" class="discovery-link">استكشف الآن <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                        <div class="discovery-card">
+                            <div class="discovery-image">
+                                <div class="discovery-placeholder">
+                                    <i class="fas fa-globe-americas"></i>
+                                </div>
+                            </div>
+                            <div class="discovery-content">
+                                <h4>وادي مارينر على المريخ</h4>
+                                <p>أكبر وادٍ في النظام الشمسي، يمتد لأكثر من 4000 كم على سطح المريخ، ويصل عمقه إلى 7 كم، مما يجعله أحد أكثر المعالم الجيولوجية إثارة للاهتمام في النظام الشمسي.</p>
+                                <a href="#" class="discovery-link">استكشف الآن <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="page">
+            <div class="about-page">
+                <h2>About the Project</h2>
+                <div class="about-content">
+                    <div class="problem-solution-section">
+                        <h3><i class="fas fa-lightbulb"></i> The Problem & Our Solution</h3>
+                        <div class="problem-solution-container">
+                            <div class="problem-box">
+                                <div class="problem-header">
+                                    <div class="problem-icon">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                    </div>
+                                    <h4>The Challenge</h4>
+                                </div>
+                                <div class="problem-content">
+                                    <p>تواجه ناسا تحديات فريدة في نشر وإتاحة بياناتها الفلكية للباحثين والجمهور:</p>
+                                    <ul>
+                                        <li><strong>أحجام ملفات ضخمة:</strong> صور ناسا عالية الدقة يمكن أن تصل إلى حجم جيجابكسل أو حتى تيرابكسل، مما يجعلها صعبة العرض على متصفحات الويب أو الأجهزة القياسية. تتطلب هذه الصور مساحة تخزين هائلة تصل إلى عدة تيرابايت للمجموعة الواحدة.</li>
+                                        <li><strong>تعقيد التنقل:</strong> بدون أدوات مناسبة، يصبح استكشاف هذه الصور التفصيلية مربكًا ومحيرًا. يفقد المستخدمون السياق المكاني بسهولة عند التكبير، مما يؤدي إلى تجربة مستخدم سيئة.</li>
+                                        <li><strong>حواجز التعاون:</strong> يواجه الباحثون صعوبة في مشاركة مناطق محددة ذات أهمية داخل هذه الصور الضخمة. تفتقر الأنظمة الحالية إلى آليات فعالة للإشارة المرجعية والتعليق التوضيحي.</li>
+                                        <li><strong>فجوة الوصول:</strong> يفتقر الجمهور العام إلى أدوات بديهية لاستكشاف وتقدير هذه الموارد المذهلة. تتطلب معظم أدوات عرض البيانات الفلكية خبرة تقنية متخصصة.</li>
+                                        <li><strong>قيود الاكتشاف:</strong> العثور على ميزات مثيرة للاهتمام يدويًا في الصور الواسعة يستغرق وقتًا طويلاً وغالبًا ما يفوت تفاصيل مهمة. تفتقر الأنظمة الحالية إلى القدرات التحليلية المتقدمة.</li>
+                                        <li><strong>تحديات البنية التحتية:</strong> تتطلب استضافة وتقديم هذه البيانات الضخمة بنية تحتية متطورة وموارد حوسبة كبيرة، مما يشكل عائقًا أمام المؤسسات الصغيرة والباحثين المستقلين.</li>
+                                        <li><strong>تحديات التحديث:</strong> تواجه ناسا صعوبة في تحديث مجموعات البيانات بانتظام مع الحفاظ على سهولة الوصول إليها، مما يؤدي إلى تأخيرات في توفر أحدث الاكتشافات للمجتمع العلمي.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <div class="solution-box">
+                                <div class="solution-header">
+                                    <div class="solution-icon">
+                                        <i class="fas fa-check-circle"></i>
+                                    </div>
+                                    <h4>Our Solution</h4>
+                                </div>
+                                <div class="solution-content">
+                                    <p>يتغلب مشروع CosmicZoom على هذه التحديات من خلال منصة حديثة وسهلة الاستخدام:</p>
+                                    <ul>
+                                        <li><strong>معالجة فعالة للصور:</strong> تحول خط المعالجة المسبقة لدينا الصور الضخمة إلى هرميات تكبير عميقة محسّنة تُحمّل بسرعة وسلاسة على أي جهاز. نستخدم تقنية <span class="tech-term">OpenSeadragon</span> مع تحسينات مخصصة لتقسيم الصور إلى بلاطات متعددة المستويات.</li>
+                                        <li><strong>تنقل بديهي:</strong> مستوحى من خرائط Google، توفر واجهتنا أدوات تكبير وتحريك مألوفة مع وعي سياقي بموقعك داخل الصورة الأكبر. تتضمن ميزات مثل خريطة مصغرة للتوجيه وعلامات مرجعية للمواقع المهمة.</li>
+                                        <li><strong>أدوات تعاونية:</strong> يمكن للباحثين التعليق على مناطق محددة ووضع إشارات مرجعية ومشاركتها مع إحداثيات دقيقة وملاحظات مخصصة. يدعم النظام التعاون في الوقت الفعلي بين الباحثين في جميع أنحاء العالم.</li>
+                                        <li><strong>إمكانية الوصول للجميع:</strong> واجهة مستخدم سهلة الاستخدام تجعل هذه الصور الفضائية المذهلة متاحة للجميع، من الطلاب الفضوليين إلى علماء الفلك المحترفين. تم تصميم الواجهة وفقًا لمعايير <span class="tech-term">WCAG 2.1</span> لضمان الوصول الشامل.</li>
+                                        <li><strong>اكتشاف معزز بالذكاء الاصطناعي:</strong> تساعد خوارزميات التعلم الآلي في تحديد الميزات المثيرة للاهتمام واقتراح المناطق التي تستحق الاستكشاف، مما يسرع الاكتشاف العلمي. نستخدم نماذج <span class="tech-term">Computer Vision</span> مدربة على آلاف الصور الفلكية المصنفة.</li>
+                                        <li><strong>تخزين وتحليل البيانات الضخمة:</strong> بنية تحتية قابلة للتطوير تتعامل مع تخزين ومعالجة البيانات الفلكية الضخمة بكفاءة. نستخدم تقنيات <span class="tech-term">Cloud Storage</span> مع خوارزميات ضغط متقدمة لتقليل متطلبات التخزين بنسبة تصل إلى 60%.</li>
+                                        <li><strong>واجهة برمجة تطبيقات (API) مفتوحة:</strong> نوفر <span class="tech-term">RESTful API</span> تتيح للمطورين والباحثين دمج بيانات CosmicZoom في تطبيقاتهم وأبحاثهم الخاصة، مما يعزز الابتكار المفتوح.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="architecture-section">
+                        <h3><i class="fas fa-project-diagram"></i> Technical Architecture</h3>
+                        <div class="architecture-grid">
+                            <div class="arch-component">
+                                <h4>معالجة البيانات</h4>
+                                <p>هذا المكون مسؤول عن معالجة صور ناسا الخام وتجهيزها لمنصة الويب.</p>
+                                <ul>
+                                    <li>صور ناسا الخام (جيجابكسل/تيرابكسل) من مصادر مثل <span class="tech-term">NASA Image and Video Library</span> و <span class="tech-term">Planetary Data System</span>.</li>
+                                    <li>المعالجة المسبقة إلى هرميات التكبير العميق باستخدام أدوات مفتوحة المصدر مثل <span class="tech-term">VIPS</span> و <span class="tech-term">libvips</span>.</li>
+                                    <li>التكامل مع واجهات برمجة تطبيقات ناسا العامة مثل <span class="tech-term">NASA Open APIs</span> و <span class="tech-term">APOD API</span>.</li>
+                                    <li>خوارزميات ضغط متقدمة لتقليل حجم البيانات مع الحفاظ على الجودة باستخدام <span class="tech-term">WebP</span> و <span class="tech-term">AVIF</span>.</li>
+                                </ul>
+                            </div>
+                            <div class="arch-component">
+                                <h4>الخدمة الخلفية والواجهة البرمجية</h4>
+                                <p>تقدم الخدمة الخلفية بلاطات الصور المعالجة مسبقًا وتدير تعليقات المستخدمين.</p>
+                                <ul>
+                                    <li>خدمة خلفية قائمة على <span class="tech-term">Python</span> باستخدام <span class="tech-term">FastAPI</span> مع <span class="tech-term">Uvicorn</span> كخادم <span class="tech-term">ASGI</span>.</li>
+                                    <li>تقديم فعال لبلاطات الصور والبيانات التي ينشئها المستخدم مع <span class="tech-term">Redis</span> للتخزين المؤقت.</li>
+                                    <li>نقاط نهاية واجهة برمجة التطبيقات لإنشاء واسترجاع والبحث في التعليقات التوضيحية باستخدام <span class="tech-term">MongoDB</span> للتخزين.</li>
+                                    <li>نظام مصادقة آمن باستخدام <span class="tech-term">JWT</span> و <span class="tech-term">OAuth2</span> للتكامل مع خدمات المصادقة الخارجية.</li>
+                                    <li>تحليلات متقدمة باستخدام <span class="tech-term">Pandas</span> و <span class="tech-term">NumPy</span> لمعالجة البيانات العلمية.</li>
+                                </ul>
+                            </div>
+                            <div class="arch-component">
+                                <h4>واجهة المستخدم والعرض</h4>
+                                <p>الواجهة الأمامية مسؤولة عن عرض صور التكبير العميق وتوفير تجربة تفاعلية.</p>
+                                <ul>
+                                    <li>واجهة ويب حديثة باستخدام <span class="tech-term">React</span> و <span class="tech-term">TypeScript</span> مع <span class="tech-term">Next.js</span> للأداء المحسن.</li>
+                                    <li>عرض صور التكبير العميق باستخدام <span class="tech-term">OpenSeadragon</span> مع تخصيصات مخصصة للأداء الأمثل.</li>
+                                    <li>تصميم متجاوب لأجهزة سطح المكتب والأجهزة المحمولة باستخدام <span class="tech-term">Tailwind CSS</span>.</li>
+                                    <li>أدوات التعليق التوضيحي (رسم، إدخال نص) وواجهة مستخدم للإشارات المرجعية.</li>
+                                </ul>
+                            </div>
+                            <div class="arch-component">
+                                <h4>التحليلات والذكاء الاصطناعي</h4>
+                                <p>توفر هذه الطبقة ميزات ذكية لتعزيز الاكتشاف والتعاون.</p>
+                                <ul>
+                                    <li>نماذج ذكاء اصطناعي للكشف عن الميزات والتعرف على الأجسام باستخدام <span class="tech-term">TensorFlow</span> و <span class="tech-term">PyTorch</span>.</li>
+                                    <li>خوارزميات لاقتراح مناطق الاهتمام للمستخدم مع <span class="tech-term">Computer Vision</span> و <span class="tech-term">Deep Learning</span>.</li>
+                                    <li>وظائف البحث والتصفية للتعليقات التوضيحية باستخدام <span class="tech-term">Elasticsearch</span>.</li>
+                                    <li>تحليلات متقدمة لأنماط استخدام المستخدمين باستخدام <span class="tech-term">Apache Spark</span>.</li>
+                                    <li>تعلم آلي تكيفي لتحسين اقتراحات الاكتشاف مع مرور الوقت.</li>
+                                </ul>
+                            </div>
+                            <div class="arch-component">
+                                <h4>التعاون والتعليقات التوضيحية</h4>
+                                <p>هذا المكون يمكّن ميزات التعاون في الوقت الفعلي والتعليقات التوضيحية.</p>
+                                <ul>
+                                    <li>تعاون في الوقت الفعلي باستخدام <span class="tech-term">WebSockets</span> و <span class="tech-term">Socket.IO</span>.</li>
+                                    <li>أدوات التعليق التوضيحي لتمييز نقاط الاهتمام مع <span class="tech-term">Fabric.js</span>.</li>
+                                    <li>إمكانيات المشاركة والتصدير مع دعم <span class="tech-term">PDF</span> و <span class="tech-term">PNG</span>.</li>
+                                    <li>نظام إشعارات متقدم للتنبيهات في الوقت الفعلي.</li>
+                                    <li>تزامن البيانات عبر الأجهزة للعمل المستمر.</li>
+                                </ul>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="team" class="page">
+            <div class="team-page">
+                <div class="team-info">
+                    <h2 style="text-align: center;">فريق Sky Link</h2>
+                    <p class="arabic-text" style="text-align: center; max-width: 800px; margin: 0 auto 30px;">نحن فريق متعدد التخصصات من المطورين والمصممين والباحثين المتحمسين لاستكشاف الفضاء وتقنيات البيانات الضخمة. تأسس فريقنا في القاهرة بهدف المشاركة في تحديات ناسا للتطبيقات الفضائية وتطوير حلول مبتكرة للمشكلات التي تواجه استكشاف الفضاء ومشاركة المعرفة العلمية. يجمعنا شغف مشترك لاستكشاف الكون وتسخير التكنولوجيا لجعل علوم الفضاء في متناول الجميع.</p>
+                    
+                    <div class="team-vision">
+                        <h3>رؤيتنا</h3>
+                        <p class="arabic-text">نسعى لجعل استكشاف الفضاء متاحًا للجميع من خلال تطوير أدوات تقنية مبتكرة تجسر الفجوة بين البيانات العلمية المعقدة والجمهور العام، مع التركيز على التعاون والابتكار المفتوح.</p>
+                    </div>
+                </div>
+                <div class="team-grid">
+                    <div class="team-member">
+                        <img src="https://via.placeholder.com/150" alt="Ahmed Mohamed Abdelalim" style="border-radius: 50%; width: 150px; height: 150px; object-fit: cover;">
+                        <h4>أحمد محمد عبد العليم</h4>
+                        <p>Team Lead & Backend Developer</p>
+                        <p class="member-bio">متخصص في تطوير تطبيقات الويب وهندسة البرمجيات، مع خبرة في تقنيات الذكاء الاصطناعي ومعالجة البيانات الضخمة.</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="https://via.placeholder.com/150" alt="Malek Ahmed Elgamal" style="border-radius: 50%; width: 150px; height: 150px; object-fit: cover;">
+                        <h4>مالك أحمد الجمل</h4>
+                        <p>Frontend Developer & UI/UX Designer</p>
+                        <p class="member-bio">متخصص في تطوير واجهات المستخدم وتصميم تجربة المستخدم، مع اهتمام خاص بتطوير واجهات تفاعلية سلسة وجذابة.</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="https://via.placeholder.com/150" alt="Khadija Omar Hassanein" style="border-radius: 50%; width: 150px; height: 150px; object-fit: cover;">
+                        <h4>خديجة عمر حسنين</h4>
+                        <p>Data Analyst & AI Engineer</p>
+                        <p class="member-bio">متخصصة في تحليل البيانات وتطوير نماذج الذكاء الاصطناعي، مع خبرة في معالجة البيانات الفلكية وتطبيقات التعلم الآلي.</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="https://via.placeholder.com/150" alt="Omar Khaled" style="border-radius: 50%; width: 150px; height: 150px; object-fit: cover;">
+                        <h4>عمر خالد</h4>
+                        <p>مطور الواجهة الأمامية وخبير التصور</p>
+                        <p class="member-bio">متخصص في تطوير واجهات المستخدم التفاعلية وتقنيات تصور البيانات، مع خبرة في مكتبات JavaScript المتقدمة وتقنيات الرسوم ثلاثية الأبعاد.</p>
+                    </div>
+                    <div class="team-member">
+                        <img src="https://via.placeholder.com/150" alt="Nour Mahmoud" style="border-radius: 50%; width: 150px; height: 150px; object-fit: cover;">
+                        <h4>نور محمود</h4>
+                        <p>خبيرة الذكاء الاصطناعي والتعلم الآلي</p>
+                        <p class="member-bio">متخصصة في تطوير نماذج الذكاء الاصطناعي والتعلم الآلي، مع اهتمام خاص بتطبيقات رؤية الكمبيوتر في تحليل الصور الفلكية.</p>
+                    </div>
+                </div>
+                
+                <div class="team-achievements">
+                    <h3>إنجازاتنا</h3>
+                    <ul>
+                        <li>المشاركة في NASA Space Apps Challenge 2023 ووصولنا للمرحلة النهائية المحلية</li>
+                        <li>تطوير عدة مشاريع مفتوحة المصدر في مجال تحليل البيانات الفلكية</li>
+                        <li>التعاون مع عدة جامعات محلية في مشاريع بحثية متعلقة بعلوم الفضاء</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Challenges Page -->
+        <section id="challenges" class="page">
+            <div class="challenges-page">
+                <div class="container">
+                    <h2>تحدي ناسا للتطبيقات الفضائية 2025</h2>
+                    
+                    <div class="challenge-container">
+                        <div class="challenge-header">
+                            <div class="challenge-badge">
+                                <i class="fas fa-award"></i>
+                            </div>
+                            <h3>The NASA Space Apps 2025 Challenge: 'Embiggen Your Eyes'</h3>
+                        </div>
+                        
+                        <div class="challenge-description">
+                            <p>يمثل تحدي "Embiggen Your Eyes" أحد أهم تحديات ناسا للتطبيقات الفضائية لعام 2025، حيث يركز على إيجاد حلول مبتكرة لمشكلة التعامل مع البيانات الفلكية الضخمة وجعلها متاحة للجميع بطريقة سهلة وفعالة.</p>
+                            
+                            <p>تواجه وكالة ناسا تحديًا كبيرًا في إدارة وعرض كميات هائلة من الصور والبيانات الفلكية التي تجمعها المراصد والتلسكوبات الفضائية مثل <span class="tech-term">Hubble</span> و<span class="tech-term">James Webb</span> و<span class="tech-term">Chandra</span>. هذه البيانات تمثل كنزًا علميًا هائلاً، لكن حجمها الضخم وتعقيدها يجعل من الصعب على الباحثين والجمهور العام الاستفادة منها بشكل كامل.</p>
+                            
+                            <div class="challenge-quote">
+                                <p>"كيف يمكننا جعل كنوز الكون المرصودة متاحة للجميع؟ كيف نحول البيانات المعقدة إلى تجربة استكشافية سلسة؟"</p>
+                            </div>
+                            
+                            <p>يدعو التحدي المشاركين لتطوير حلول تقنية مبتكرة تساعد في تنظيم وعرض وتحليل البيانات الفلكية بطريقة تفاعلية وسهلة الاستخدام، مع التركيز على تحسين تجربة المستخدم وتسهيل الوصول إلى المعلومات العلمية.</p>
+                        </div>
+                        
+                        <div class="challenge-objectives">
+                            <h4>أهداف التحدي:</h4>
+                            <ul>
+                                <li>تطوير واجهات مستخدم سهلة الاستخدام للتعامل مع الصور الفلكية عالية الدقة</li>
+                                <li>إنشاء أدوات للتكبير والتصغير السلس في الصور الفلكية الضخمة</li>
+                                <li>تسهيل التعاون بين الباحثين في تحليل البيانات الفلكية</li>
+                                <li>تحسين إمكانية الوصول إلى البيانات الفلكية للجمهور العام</li>
+                                <li>دمج تقنيات الذكاء الاصطناعي لاكتشاف الأنماط والظواهر المثيرة للاهتمام</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="challenge-container">
+                        <div class="challenge-header">
+                            <div class="challenge-badge">
+                                <i class="fas fa-lightbulb"></i>
+                            </div>
+                            <h3>استجابتنا: مشروع CosmicZoom</h3>
+                        </div>
+                        
+                        <div class="challenge-description">
+                            <p>يمثل مشروع <span class="english-inline">CosmicZoom</span> استجابتنا لتحدي ناسا، حيث قمنا بتطوير منصة مبتكرة تحول الطريقة التي نتفاعل بها مع الصور الفلكية والبيانات الفضائية.</p>
+                            
+                            <p>تعالج منصتنا المشكلات الرئيسية في التعامل مع البيانات الفلكية من خلال تقديم واجهة سهلة الاستخدام تتيح للمستخدمين استكشاف الصور الفلكية عالية الدقة بسلاسة، مع إمكانيات متقدمة للتكبير والتصغير والتنقل، بالإضافة إلى أدوات تعاونية وميزات مدعومة بالذكاء الاصطناعي.</p>
+                            
+                            <div class="challenge-quote">
+                                <p>"نحن لا نقدم مجرد أداة لعرض الصور، بل نقدم بوابة تفاعلية لاستكشاف أسرار الكون."</p>
+                            </div>
+                        </div>
+                        
+                        <div class="challenge-objectives">
+                            <h4>كيف يلبي مشروعنا أهداف التحدي:</h4>
+                            <ul>
+                                <li><strong>التعامل مع الصور الضخمة:</strong> تقنية <span class="tech-term">Deep Zoom</span> المتطورة للتعامل مع الصور الفلكية ذات الأحجام الهائلة</li>
+                                <li><strong>واجهة مستخدم بديهية:</strong> تصميم سلس وأنيق يجعل استكشاف الفضاء متاحًا للجميع</li>
+                                <li><strong>أدوات تعاونية:</strong> إمكانية إضافة التعليقات والملاحظات ومشاركتها مع الآخرين</li>
+                                <li><strong>الوصول العام:</strong> منصة مفتوحة المصدر متاحة للجميع عبر الإنترنت</li>
+                                <li><strong>تكامل الذكاء الاصطناعي:</strong> خوارزميات ذكية لاكتشاف وتحليل الظواهر الفلكية المثيرة للاهتمام</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Resources & Tools Page -->
+        <section id="resources" class="page">
+            <div class="resources-page">
+                <div class="container">
+                    <h2>الموارد والأدوات</h2>
+                    
+                    <div class="resources-intro">
+                        <p>نقدم هنا مجموعة من الموارد والأدوات المفيدة للمطورين والباحثين والمهتمين بمجال استكشاف الفضاء وتطوير التطبيقات الفلكية. هذه الموارد ساعدتنا في بناء مشروع CosmicZoom ونأمل أن تساعدك أيضًا في مشاريعك المستقبلية.</p>
+                    </div>
+                    
+                    <div class="resources-grid">
+                        <div class="resource-section">
+                            <div class="resource-header">
+                                <div class="resource-icon">
+                                    <i class="fas fa-satellite"></i>
+                                </div>
+                                <h3>NASA APIs & Data</h3>
+                            </div>
+                            
+                            <div class="resource-list">
+                                <div class="resource-item">
+                                    <a href="https://api.nasa.gov/planetary/apod" target="_blank"><span class="tech-term">NASA APOD API</span></a>
+                                    <p>واجهة برمجة تطبيقات صورة الفلك اليومية من ناسا، توفر صورة فلكية مميزة يوميًا مع شرح علمي. مثالية للتطبيقات التي تعرض محتوى فلكي متجدد.</p>
+                                    <div class="resource-tags">
+                                        <span class="tag">API</span>
+                                        <span class="tag">Images</span>
+                                        <span class="tag">Daily</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="resource-item">
+                                    <a href="https://pds.nasa.gov/" target="_blank"><span class="tech-term">Planetary Data System (PDS)</span></a>
+                                    <p>نظام بيانات الكواكب هو أرشيف ناسا الرسمي للبيانات العلمية من مهمات استكشاف الكواكب. يوفر بيانات خام ومعالجة من مختلف المهمات الفضائية.</p>
+                                    <div class="resource-tags">
+                                        <span class="tag">Data</span>
+                                        <span class="tag">Research</span>
+                                        <span class="tag">Archive</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="resource-item">
+                                    <a href="https://search.earthdata.nasa.gov/" target="_blank"><span class="tech-term">NASA Earthdata Search</span></a>
+                                    <p>منصة بحث متقدمة للوصول إلى بيانات الأرض والمناخ والغلاف الجوي من ناسا. توفر واجهات برمجة للوصول إلى مجموعات البيانات الضخمة.</p>
+                                    <div class="resource-tags">
+                                        <span class="tag">Earth</span>
+                                        <span class="tag">Climate</span>
+                                        <span class="tag">Big Data</span>
+                                    </div>
+                                </div>
+                                    <a href="https://hubblesite.org/api/documentation" target="_blank">Hubble Space Telescope API</a>
+                                    <p>واجهة برمجة تطبيقات تلسكوب هابل الفضائي، توفر إمكانية الوصول إلى آلاف الصور عالية الدقة والبيانات العلمية من أحد أشهر التلسكوبات الفضائية.</p>
+                                    <div class="resource-tags">
+                                        <span class="tag">Hubble</span>
+                                        <span class="tag">Telescope</span>
+                                        <span class="tag">High-Res</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="resource-section">
+                            <div class="resource-header">
+                                <div class="resource-icon">
+                                    <i class="fas fa-code"></i>
+                                </div>
+                                <h3>Open-Source Libraries</h3>
+                            </div>
+                            
+                            <div class="resource-list">
+                                <div class="resource-item">
+                                    <a href="https://openseadragon.github.io/" target="_blank"><span class="tech-term">OpenSeadragon</span></a>
+                                    <p>مكتبة جافاسكريبت مفتوحة المصدر للتعامل مع الصور عالية الدقة وتوفير إمكانيات التكبير والتصغير السلس. استخدمناها كأساس لمحرك العرض في CosmicZoom.</p>
+                                    <div class="resource-tags">
+                                        <span class="tag">JavaScript</span>
+                                        <span class="tag">Deep Zoom</span>
+                                        <span class="tag">Viewer</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="resource-item">
+                                    <a href="https://leafletjs.com/" target="_blank"><span class="tech-term">Leaflet.js</span></a>
+                                    <p>مكتبة جافاسكريبت مفتوحة المصدر للخرائط التفاعلية، استخدمناها لتنفيذ بعض وظائف التنقل والتحديد في واجهة المستخدم.</p>
+                                    <div class="resource-tags">
+                                        <span class="tag">Maps</span>
+                                        <span class="tag">Interactive</span>
+                                        <span class="tag">UI</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="resource-item">
+                                    <a href="https://www.astropy.org/" target="_blank"><span class="tech-term">Astropy</span></a>
+                                    <p>مجموعة مكتبات بايثون للفلك الحسابي، استخدمناها في معالجة البيانات الفلكية وتحليلها قبل عرضها في الواجهة.</p>
+                                    <div class="resource-tags">
+                                        <span class="tag">Python</span>
+                                        <span class="tag">Astronomy</span>
+                                        <span class="tag">Data</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="resource-item">
+                                    <a href="https://www.khronos.org/webgl/" target="_blank"><span class="tech-term">WebGL</span></a>
+                                    <p>تقنية رسوميات ويب تسمح بعرض الرسومات ثلاثية الأبعاد في المتصفح، استخدمناها لتحسين أداء عرض الصور الفلكية الضخمة.</p>
+                                    <div class="resource-tags">
+                                        <span class="tag">3D</span>
+                                        <span class="tag">Graphics</span>
+                                        <span class="tag">Performance</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="resource-section">
+                            <div class="resource-header">
+                                <div class="resource-icon">
+                                    <i class="fas fa-book"></i>
+                                </div>
+                                <h3>Learning Materials</h3>
+                            </div>
+                            
+                            <div class="resource-list">
+                                <div class="resource-item">
+                                    <a href="https://api.nasa.gov/documentation" target="_blank">Developing with NASA APIs</a>
+                                    <p>دليل شامل لتطوير التطبيقات باستخدام واجهات برمجة ناسا، يتضمن أمثلة عملية وأفضل الممارسات للاستفادة من البيانات الفلكية.</p>
+                                    <div class="resource-tags">
+                                        <span class="tag">Tutorial</span>
+                                        <span class="tag">API</span>
+                                        <span class="tag">Development</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="resource-item">
+                                    <a href="https://openseadragon.github.io/examples/deep-zoom/" target="_blank">An Introduction to Deep Zoom Technology</a>
+                                    <p>مقدمة تفصيلية لتقنية التكبير العميق وكيفية استخدامها لعرض الصور عالية الدقة بكفاءة، مع أمثلة عملية باستخدام OpenSeadragon.</p>
+                                    <div class="resource-tags">
+                                        <span class="tag">Deep Zoom</span>
+                                        <span class="tag">Tutorial</span>
+                                        <span class="tag">Images</span>
+                                    </div>
+                                </div>
+                                        <span class="tag">Astronomy</span>
+                                        <span class="tag">Data Analysis</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="resource-section">
+                            <div class="resource-header">
+                                <div class="resource-icon">
+                                    <i class="fas fa-graduation-cap"></i>
+                                </div>
+                                <h3>Learning Materials</h3>
+                            </div>
+                            
+                            <div class="resource-list">
+                                <div class="resource-item">
+                                    <a href="https://www.coursera.org/learn/astro" target="_blank">Astronomy: Exploring Time and Space</a>
+                                    <p>دورة تعليمية مجانية على منصة Coursera تقدم مقدمة شاملة لعلم الفلك والكون، مثالية للمطورين الذين يرغبون في فهم المفاهيم الأساسية في هذا المجال.</p>
+                                    <div class="resource-tags">
+                                        <span class="tag">Course</span>
+                                        <span class="tag">Astronomy</span>
+                                        <span class="tag">Beginner</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="resource-item">
+                                    <a href="https://spaceappschallenge.org/resources/" target="_blank">NASA Space Apps Resources</a>
+                                    <p>مجموعة من الموارد التي توفرها ناسا خصيصًا للمشاركين في تحدي Space Apps، تشمل بيانات ومعلومات وأدوات مفيدة.</p>
+                                    <div class="resource-tags">
+                                        <span class="tag">NASA</span>
+                                        <span class="tag">Challenge</span>
+                                        <span class="tag">Resources</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="resource-item">
+                                    <a href="https://github.com/topics/astronomy" target="_blank">GitHub Astronomy Projects</a>
+                                    <p>مجموعة من المشاريع مفتوحة المصدر المتعلقة بعلم الفلك على GitHub، يمكن أن تكون مصدر إلهام ومرجع للمطورين.</p>
+                                    <div class="resource-tags">
+                                        <span class="tag">GitHub</span>
+                                        <span class="tag">Open Source</span>
+                                        <span class="tag">Projects</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 CosmicZoom - Sky Link Team. All Rights Reserved.</p>
+        <div class="footer-links">
+            <a href="#" onclick="showPage('home')">Home</a> |
+            <a href="#" onclick="showPage('about')">About</a> |
+            <a href="#" onclick="showPage('team')">Team</a>
+        </div>
+    </footer>
+
+    <script>
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+        }
+    </script>
+</body>
+</html>
